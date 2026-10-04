@@ -1,14 +1,15 @@
-class Task:
-    done: bool = False
-    title: str
-    
-    def set_info(self, text: str):
-        self.title = text
-    
-    def get_info(self):
-        return self.title
+class Auth:
+    isAuthed: bool = False
 
+    def login(self):
+        self.isAuthed = True
         
-task = Task()
-task.set_info('make python lesson')
-print(task.get_info())
+    def logout(this):
+        this.isAuthed = False
+        
+auth_service = Auth()
+auth_service.login()
+auth_service.logout()
+# Auth.login(auth_service)
+print(auth_service.isAuthed)
+        
