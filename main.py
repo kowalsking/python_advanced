@@ -1,15 +1,11 @@
-class Auth:
-    isAuthed: bool = False
+class Note:
+    title: str
+    description: str
+    
+    def __init__(self, title: str, description: str = ''):
+        self.title = title
+        self.description = description
 
-    def login(self):
-        self.isAuthed = True
-        
-    def logout(this):
-        this.isAuthed = False
-        
-auth_service = Auth()
-auth_service.login()
-auth_service.logout()
-# Auth.login(auth_service)
-print(auth_service.isAuthed)
-        
+note = Note('note1', 'make lesson')
+
+print(note.description)
