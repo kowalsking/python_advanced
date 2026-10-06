@@ -1,14 +1,16 @@
-def log(func):
-    """Logger function"""
-    def wrapper(*args, **kwargs):
-        print(f"Invoke {func.__name__} with arguments {args} {kwargs}")
-        result = func(*args, **kwargs)
-        print("Done!")
-        return result
-    return wrapper
+def add_repr(cls):
+    def __repr__(self):
+        return f"{cls.__name__}[{self.__dict__}]"
+    cls.__repr__ = __repr__
+    return cls
 
-@log
-def add(a: float, b: float) -> float:
-    return a + b
+@add_repr
+class User:
+    def __init__(self, name: str, age: int):
+        self.name = name
+        self.age = age
+        
+# User = dec(User)
 
-print(add(4, 4))
+user = User('Ann', 19)
+print(user)
