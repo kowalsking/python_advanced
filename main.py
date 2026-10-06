@@ -1,25 +1,27 @@
-class User:
-    users = []
-
-    def __init__(self, name: str, age: int):
-        self.name = name
-        self.age = age
-        User.users.append(self)
-        
-    @classmethod
-    def from_string(cls, data: str):
-        name, age = data.split(',')
-        return cls(name, int(age))
-
-    @classmethod
-    def total_users(cls):
-        return len(cls.users)
+class ShoppingList:
+    def __init__(self, items: list[str]):
+        self.items: list[str] = items
     
-edward = User('Edward', 23)
-kate = User('Kate', 32)
-print(User.total_users())
+    def __eq__(self, value):
+        if not isinstance(value, ShoppingList):
+            return False
+        return self.items == value.items
+    
+    def __len__(self):
+        return len(self.items)
+    
+    def __getitem__(self, index: int):
+        return self.items[index]
+    
+    def __repr__(self):
+        return f"ShoppingList(items={','.join(self.items)})"
+    
+    
 
-anna = User.from_string('Anna,52')
+list_1 = ShoppingList(['1', '2'])
+list_2 = ShoppingList(['3', '4'])
 
-print(anna.name)
-print(anna.age)
+print(len(list_1))
+print(list_1[0])
+print(list_1 == list_2)
+print(list_2)
