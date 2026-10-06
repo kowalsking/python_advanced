@@ -1,13 +1,25 @@
-from datetime import date
+class User:
+    users = []
 
-class Book:
-    def __init__(self, title: str, year: int):
-        self.title = title
-        self.year = year
+    def __init__(self, name: str, age: int):
+        self.name = name
+        self.age = age
+        User.users.append(self)
         
-    @staticmethod
-    def years_since(year: int):
-        return date.today().year - year
+    @classmethod
+    def from_string(cls, data: str):
+        name, age = data.split(',')
+        return cls(name, int(age))
+
+    @classmethod
+    def total_users(cls):
+        return len(cls.users)
     
-book = Book('Bible', 1934)
-print(Book.years_since(book.year))
+edward = User('Edward', 23)
+kate = User('Kate', 32)
+print(User.total_users())
+
+anna = User.from_string('Anna,52')
+
+print(anna.name)
+print(anna.age)
