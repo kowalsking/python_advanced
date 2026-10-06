@@ -1,27 +1,13 @@
-class ShoppingList:
-    def __init__(self, items: list[str]):
-        self.items: list[str] = items
+class Rectangle:
+    def __init__(self, width: float, height: float):
+        self.width = width
+        self.height = height
     
-    def __eq__(self, value):
-        if not isinstance(value, ShoppingList):
-            return False
-        return self.items == value.items
-    
-    def __len__(self):
-        return len(self.items)
-    
-    def __getitem__(self, index: int):
-        return self.items[index]
-    
-    def __repr__(self):
-        return f"ShoppingList(items={','.join(self.items)})"
-    
-    
+    @property
+    def area(self):
+        return self.width * self.height
+        
+        
+rect = Rectangle(10, 5)
 
-list_1 = ShoppingList(['1', '2'])
-list_2 = ShoppingList(['3', '4'])
-
-print(len(list_1))
-print(list_1[0])
-print(list_1 == list_2)
-print(list_2)
+print(rect.area)
