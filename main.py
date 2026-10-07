@@ -1,21 +1,20 @@
-class Positive:
-    def __init__(self, name):
-        self.name = name
-        
-    def __get__(self, obj, owner):
-        print('get')
-        return obj.__dict__[self.name]
+class User:
+    age: float
     
-    def __set__(self, obj, value):
-        print('set')
-        if value <= 0:
-            raise ValueError(f"{self.name} must be positive")
-        obj.__dict__[self.name] = value
-
-class Product:
-    price = Positive("price")
+u = User()
+setattr(u, "age", 10)
+print(getattr(u, 'age'))
 
 
-p = Product()
-p.price = -100
-print(p.price)
+class Commands:
+    def start(self): print('start')
+    def stop(self): print('stop')
+    def help(self): print('help')
+    
+cmd = Commands()
+action = input('Write command: ')
+
+if hasattr(cmd, action):
+    getattr(cmd, action)()
+else:
+    print("Command don't found!")
