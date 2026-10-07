@@ -1,35 +1,13 @@
-# def retry(times: int):
-#     def decorator(func):
-#         def wrapper(*args, **kwargs):
-#             for _ in range(times):
-#                 try:
-#                     func(*args, **kwargs)
-#                 except ValueError as e:
-#                     pass
-#         return wrapper
-#     return decorator
+def log_call(fn):
+    def wrapper(*args, **kwargs):
+        print(f"[LOG] {fn.__qualname__} args={args}")
+        return fn(*args, **kwargs)
+    return wrapper
 
-
-def retry(times: int):
-    def decorator(func):
-        def wrapper(*args, **kwargs):
-            for attemp in range(1, times + 1):
-                try:
-                    return func(*args, **kwargs)
-                except Exception as e:
-                    print(f"Try {attemp} don'c completed: {e}")
-                    if attemp == times:
-                        print('All attemps compleated')
-        return wrapper
-    return decorator
-
-
-import random
-
-@retry(3)
-def unstable():
-    if random.random() < 0.7:
-        raise ValueError('Network error')
-    print('Success!')
+class Service:
+    @log_call
+    def process(self, x: float) -> float:
+        return x * 2
     
-unstable()
+s = Service()
+s.process(4)
