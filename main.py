@@ -1,22 +1,21 @@
-from functools import wraps
-
-def log_call(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        print(f"[LOG] {fn.__qualname__} args={args}")
-        return fn(*args, **kwargs)
-    return wrapper
-
-class Service:
-    @log_call
-    def process(self, x: float) -> float:
-        return x * 2
+class Positive:
+    def __init__(self, name):
+        self.name = name
+        
+    def __get__(self, obj, owner):
+        print('get')
+        return obj.__dict__[self.name]
     
-s = Service()
-s.process(4)
+    def __set__(self, obj, value):
+        print('set')
+        if value <= 0:
+            raise ValueError(f"{self.name} must be positive")
+        obj.__dict__[self.name] = value
 
-def a():
-    return 1
+class Product:
+    price = Positive("price")
 
-print(a.__name__)
-print(s.process.__name__)
+
+p = Product()
+p.price = -100
+print(p.price)
