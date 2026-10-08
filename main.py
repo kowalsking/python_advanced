@@ -1,21 +1,17 @@
-class User:
-    def __init__(self, name: str, email: str):
-        self.name = name
-        self.email = email
-        
-    def get_info(self):
-        return f"{self.email}, {self.email}"
+class Light:
+    def turn_on(self):
+        print('Light is turned on!')
 
-class Student(User): 
-    def watch_video(self):
-        print('Watching...')
+class Music:
+    def play(self):
+        print('Music in on!')
 
+class SmartHome(Light, Music):
+    def start(self):
+        print('Smart house in on!')
+        self.turn_on()
+        self.play()
 
-class Mentor(User):
-    def check_homework(self):
-        print('Checking...')
-        
+sm = SmartHome()
 
-student = Student('Dima', 'king@wazar.ai')
-print(student.get_info())
-print(student.email)
+sm.start()
