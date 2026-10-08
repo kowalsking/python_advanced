@@ -3,15 +3,19 @@ class Light:
         print('Light is turned on!')
 
 class Music:
-    def play(self):
+    def turn_on(self):
         print('Music in on!')
 
 class SmartHome(Light, Music):
+    def play(self):
+        print('Alternative play!')
+    
     def start(self):
         print('Smart house in on!')
         self.turn_on()
-        self.play()
+        # self.play()
 
 sm = SmartHome()
 
 sm.start()
+print(SmartHome.mro())
