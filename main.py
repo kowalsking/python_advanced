@@ -1,21 +1,21 @@
-class Light:
-    def turn_on(self):
-        print('Light is turned on!')
-
-class Music:
-    def turn_on(self):
-        print('Music in on!')
-
-class SmartHome(Light, Music):
-    def play(self):
-        print('Alternative play!')
+class Order:
+    def __init__(self, number: int, total: float):
+        self.number = number
+        self.total = total
+        print(f"Order created: {number} with sum {total}")
     
-    def start(self):
-        print('Smart house in on!')
-        self.turn_on()
-        # self.play()
+    def process(self):
+        print('Order is done!')
 
-sm = SmartHome()
+class EmailOrder(Order):
+    def __init__(self, number: int, total: float, email: str):
+        # super().__init__(number, total)
+        self.email = email
+    
+    def process(self):
+        print('Message is sent')
+        super().process()
+        
 
-sm.start()
-print(SmartHome.mro())
+email = EmailOrder(10, 2, 'a@a.com')
+email.process()
