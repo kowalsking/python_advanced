@@ -1,30 +1,21 @@
 class User:
-    def __init__(self, name: str, balance: float):
+    def __init__(self, name: str, email: str):
         self.name = name
-        self.__balance = balance
-    
-    def get_balance(self):
-        return self.__balance
-    
-    def deposit(self, amount: float):
-        if amount > 0:
-            self.__balance += amount
-        else:
-            raise ValueError('Amount should be positive')
-    
-    def withdraw(self, amount: float):
-        if 0 < amount <= self.__balance:
-            self.__balance -= amount
-        else: 
-            raise ValueError('No enought money!')
+        self.email = email
         
-u = User('Tony', 1000)
-u.deposit(123)
+    def get_info(self):
+        return f"{self.email}, {self.email}"
 
-print(u.get_balance())
+class Student(User): 
+    def watch_video(self):
+        print('Watching...')
 
-u.withdraw(344)
-u._User__balance = -1 # Так можна
-u.__balance = -1 # Створить оремиу змінну __balance
-print(u.get_balance())
-print(u.__dict__)
+
+class Mentor(User):
+    def check_homework(self):
+        print('Checking...')
+        
+
+student = Student('Dima', 'king@wazar.ai')
+print(student.get_info())
+print(student.email)
