@@ -1,20 +1,14 @@
-class Payment:
-    def pay(self, amount):
-        raise NotImplementedError('Methond should exist!')
+class Notification:
+    def __init__(self, sender):
+        self.sender = sender
+    
+    def send(self, message):
+        self.sender.send(message)
+    
+class EmailSender:
+    def send(self, message):
+        print(f'Send by email: {message}')
+    
+noti = Notification(EmailSender())
 
-class CardPayment(Payment):
-    def pay(self, amount):
-        print(f'Payed by card: {amount}')
-
-class CryptoPayment(Payment):
-    def pay(self, amount):
-        print(f'Payed by crypto: {amount}')
-
-class ApplePayment(Payment):
-    def pay(self, amount):
-        print(f'Payed by ApplyPay: {amount}')
-
-payments = [CardPayment(), CryptoPayment(), ApplePayment()]
-
-for p in payments:
-    p.pay(100)
+noti.send("Heello!!!ww")
