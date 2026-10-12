@@ -1,15 +1,14 @@
 from dataclasses import dataclass
+from typing import Protocol
+
+class DiscountPolicy(Protocol):
+    def discount(self, total: float) -> float: ...
 
 @dataclass
 class Item:
     name: str
     price: float
     qty: int = 1
-    
-    def __init__(self, name, price, qty):
-        self.name = name
-        self.price = price
-        self.qty = qty
         
     def subtotal(self):
         return self.price * self.qty
@@ -27,9 +26,8 @@ class PercentageDiscount:
 
 @dataclass
 class Order:
-    def __init__(self, items: list[Item], policy):
-        self.items = items
-        self.policy = policy
+    items: list[Item]
+    policy: DiscountPolicy
     
     def total(self):
         return sum(i.subtotal() for i in self.items)
