@@ -1,49 +1,33 @@
 from dataclasses import dataclass
 from typing import Protocol
 
-class DiscountPolicy(Protocol):
-    def discount(self, total: float) -> float: ...
-
-@dataclass
-class Item:
-    name: str
-    price: float
-    qty: int = 1
+class Storage(Protocol):
+    def save(self, data: str) -> None: ...
+    def load(self) -> str: ...
+    
+class MemoryStorage:
+    def save(self, data: str) -> None:
+        self.data = data
         
-    def subtotal(self):
-        return self.price * self.qty
+    def load(self) -> str:
+        return getattr(self, 'data', '')
     
-class NoDiscount:
-    def discount(self, total: float) -> float:
-        return 0
+class FileStorage:
+    def save(self, data: str) -> None:
+        with open('data.txt', 'w', encoding='utf-8') as f:
+            f.write(data)
+        
+    def load(self) -> str:
+        with open('data.txt', 'r', encoding='utf-8') as f:
+            return f.read()
+            
+def use_storage(storage: Storage, data: str):
+    storage.save(data)
+    return storage.load()
 
-@dataclass
-class PercentageDiscount:
-    percent: float
+mem = MemoryStorage()
+file = FileStorage()
 
-    def discount(self, total: float) -> float:
-        return total * (self.percent / 100)
-
-@dataclass
-class Order:
-    items: list[Item]
-    policy: DiscountPolicy
-    
-    def total(self):
-        return sum(i.subtotal() for i in self.items)
-    
-    def total_with_discount(self):
-        t = self.total()
-        return t - self.policy.discount(t)
-    
-    def set_policy(self, policy):
-        self.policy = policy
-
-basket = [Item('Paper', 100, 5), Item('Candy', 20, 1)]
-order = Order(basket, NoDiscount())
-print(order.total())
-print(order.total_with_discount())
-
-order.set_policy(PercentageDiscount(10))
-print(order.total())
-print(order.total_with_discount())
+user_input = input('Write data: ')
+print(use_storage(mem, user_input))
+print(use_storage(file, user_input))
