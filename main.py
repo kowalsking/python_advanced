@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -6,49 +6,51 @@ class Student:
     name: str
     score: float
 
-# @dataclass
-class StudentsList:
-    all_students: list[Student] = []
+@dataclass
+class StudentRepository:
+    students: list[Student] = field(default_factory=list)
 
-    def add_student(self, student: Student):
-        return self.all_students.append(student)
+    def add(self, student: Student):
+        return self.students.append(student)
     
-    def get_students(self):
-        return self.all_students
+    def list_all(self) -> list[Student]:
+        return self.students
 
-class AverageScore:
-    def get_average_score(self, students_list: list[Student]):
-        count = 0
-        for s in students_list:
-            count += s.score
-        
-        return count / len(students_list)
+@dataclass
+class StatisticService:
+    repository: StudentRepository
+    
+    def get_average_score(self) -> float:
+        students = self.repository.list_all()
+        if not students:
+            return 0
+        total = sum(s.score for s in students)
+        return total / len(students)
 
-class BestStudent:
-    def get_best_student(self, students_list: list[Student]):
-        best_student_score = 0
-        best_student = None
-        for s in students_list:
-            if s.score > best_student_score:
-                best_student = s
-                best_student_score = s.score
-        return best_student
+    def get_best_student(self) -> Student:
+        students = self.repository.list_all()
+        return max(students, key=lambda s: s.score)
+    
 
-class Report:
-    def print_report(self, best_student, average_score):
-        print(f'Average score: {average_score}')
-        print(f'Best student: {best_student}')
+@dataclass
+class ReportPrinter:
+    repository: StudentRepository
+    stat_service: StatisticService
+
+    def print_report(self):
+        print('Students report')
+        for s in self.repository.list_all():
+            print(f'{s.name}: {s.score}')
+        print(f'Average score: {self.stat_service.get_average_score()}')
+        print(f'Best student: {self.stat_service.get_best_student().name}')
     
     
-students = StudentsList()
-students.add_student(Student('Andrew', 11.1))
-students.add_student(Student('Mike', 10.0))
-students.add_student(Student('Mitya', 12.0))
+repo = StudentRepository()
+repo.add(Student('Andrew', 11.1))
+repo.add(Student('Mike', 10.0))
+repo.add(Student('Mitya', 12.0))
 
-best = BestStudent().get_best_student(students.all_students)
-avg = AverageScore().get_average_score(students.all_students)
+stat_service = StatisticService(repo)
+printer = ReportPrinter(repo, stat_service)
 
-print(students.get_students())
-print(avg)
-print(best)
-print(Report().print_report(best, avg))
+printer.print_report()
