@@ -1,25 +1,36 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import Protocol
 
 
-class Logger(ABC):
-    @abstractmethod
-    def log(self, message): ...
+class StockRepository(Protocol):
+    def get_stock_count(self) -> int: ...
 
-class FileLogger(Logger):
-    def log(self, message: str):
-        print(f'Write file: {message}')
-        
-class ConsoleLogger(Logger):
-    def log(self, message: str):
-        print(f'Write file: {message}')
+class Notifier(Protocol):
+    def notify(self, message: str): ...
 
 @dataclass
-class UserService:
-    logger: Logger
+class InMemoryStockRepository:
+    items_count: int
 
-    def create_user(self, name: str):
-        self.logger.log(f'Created account {name}')
+    def get_stock_count(self) -> int:
+        return self.items_count
+    
+class EmailNotifier:
+    def notify(self, message: str):
+        print(f'Email: {message}')
 
-service = UserService(ConsoleLogger())
-service.create_user('sd')
+@dataclass
+class LowStockService:
+    repository: StockRepository
+    notifier: Notifier
+    
+    def run(self):
+        c = self.repository.get_stock_count()
+        if c <= 10:
+            self.notifier.notify('Buy more items')
+        else:
+            print('All good!')
+
+service = LowStockService(InMemoryStockRepository(101), EmailNotifier())
+service.run()
