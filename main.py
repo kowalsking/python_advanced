@@ -1,42 +1,29 @@
-# class Printer:
-#     def print_doc(self, doc: str):
-#         pass
-    
-#     def scan_doc(self, doc: str):
-#         pass
-
-#     def fax_doc(self, doc: str):
-#         pass
-    
-# class OldPrinter(Printer):
-#     def print_doc(self, doc: str):
-#         print(doc)
-    
-#     def scan_doc(self, doc: str):
-#         raise NotImplementedError("Can't!")
-    
-#     def fax_doc(self, doc: str):
-#         raise NotImplementedError("Can't!")
-
 from abc import ABC, abstractmethod
 
+# class PaymentProcessor:
+#     def pay(self, amount: float): ...
+#     def refund(self, amount: float): ...
+#     def tokenize(self, amount: float): ...
+#     def check_balance(self, amount: float): ...
 
-class Printable(ABC):
+class Payable(ABC):
     @abstractmethod
-    def print_doc(self, doc: str): ...
+    def pay(self, amount: float): ...
+    
+class Refundable(ABC):
+    @abstractmethod
+    def refund(self, amount: float): ...
 
-class Scanable(ABC):
+class Tokenizeble(ABC):
     @abstractmethod
-    def scan_doc(self, doc: str): ...
+    def tokenize(self, amount: float): ...
     
-class Faxable(ABC):
+class BalanceCheckable(ABC):
     @abstractmethod
-    def fax_doc(self, doc: str): ...
+    def check_balance(self, amount: float): ...
     
-class ModernPrinter(Printable, Scanable, Faxable):
-    def print_doc(self, doc: str): ...
-    def scan_doc(self, doc: str): ...
-    def fax_doc(self, doc: str): ...
+class Card(Payable, Tokenizeble):
+    def pay(self, amount: float): ...
+    def refund(self, amount: float): ...
+    def tokenize(self, amount: float): ...
     
-class OldPrinter(Printable):
-    def print_doc(self, doc: str): ...
