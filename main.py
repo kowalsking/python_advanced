@@ -1,44 +1,40 @@
-# class DsicountCalculator:
-#     def calculate(self, user_type: str, amount: float) -> float:
-#         if user_type == 'student':
-#             return amount * 0.9
-#         elif user_type == 'vip':
-#             return amount * 0.8
+# class Notifier:
+#     def send(self, message: str, method: str) -> None:
+#         if method == 'email':
+#             print(f'[Email] Message sent: {message}')
+#         elif method == 'push':
+#             print(f'[Push] Message sent: {message}')
 #         else:
-#             return amount
+#             print('Unknown notification method.')
 
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 
-class DiscountPolicy(ABC):
+class NotificationPolicy(ABC):
     @abstractmethod
-    def apply_discount(self, amount: float) -> float:
+    def send(self, message: str) -> None:
         pass
     
-class NoDiscount(DiscountPolicy):
-    def apply_discount(self, amount: float) -> float:
-        return amount
+class EmailNotification(NotificationPolicy):
+    def send(self, message: str) -> None:
+        print(f'[Email] Message sent: {message}')
 
-class VipDiscount(DiscountPolicy):
-    def apply_discount(self, amount: float) -> float:
-        return amount * 0.8
+class PushNotification(NotificationPolicy):
+    def send(self, message: str) -> None:
+        print(f'[Push] Message sent: {message}')
 
-class StudentDiscount(DiscountPolicy):
-    def apply_discount(self, amount: float) -> float:
-        return amount * 0.9
-    
-class GuestDiscount(DiscountPolicy):
-    def apply_discount(self, amount: float) -> float:
-        return amount * 0.95
+class TelegramNotification(NotificationPolicy):
+    def send(self, message: str) -> None:
+        print(f'[Telegram] Message sent: {message}')
 
 @dataclass
-class DiscountCalculator:
-    policy: DiscountPolicy
+class Notifier:
+    notifier: NotificationPolicy
     
-    def calculate(self, amount: float) -> float:
-        return self.policy.apply_discount(amount)
+    def send(self, message: str) -> None:
+        self.notifier.send(message)
     
-calc = DiscountCalculator(GuestDiscount())
-print(calc.calculate(1000))
+calc = Notifier(TelegramNotification())
+print(calc.send('Hello'))
