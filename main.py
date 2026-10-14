@@ -1,31 +1,42 @@
+# class Printer:
+#     def print_doc(self, doc: str):
+#         pass
+    
+#     def scan_doc(self, doc: str):
+#         pass
+
+#     def fax_doc(self, doc: str):
+#         pass
+    
+# class OldPrinter(Printer):
+#     def print_doc(self, doc: str):
+#         print(doc)
+    
+#     def scan_doc(self, doc: str):
+#         raise NotImplementedError("Can't!")
+    
+#     def fax_doc(self, doc: str):
+#         raise NotImplementedError("Can't!")
+
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 
 
-# @dataclass
-class Payment:
-    def pay(self, amount: float) -> float:
-        print(f'P: {amount}')
-        return amount
+class Printable(ABC):
+    @abstractmethod
+    def print_doc(self, doc: str): ...
 
-@dataclass
-class BonusPayment(Payment):
-    bonuses: float
-    def pay(self, amount: float) -> float:
-        final = amount - self.bonuses
-        print(f'P: {final}')
-        return final
-
-@dataclass
-class InstallmentPayment(Payment):
-    part: int
-    def pay(self, amount: float) -> float:
-        final = amount / self.part
-        print(f'P: {amount / self.part}')
-        return final
+class Scanable(ABC):
+    @abstractmethod
+    def scan_doc(self, doc: str): ...
     
+class Faxable(ABC):
+    @abstractmethod
+    def fax_doc(self, doc: str): ...
     
-def pay(method: Payment):
-    return method.pay(33)
-
-pay(InstallmentPayment(2))
+class ModernPrinter(Printable, Scanable, Faxable):
+    def print_doc(self, doc: str): ...
+    def scan_doc(self, doc: str): ...
+    def fax_doc(self, doc: str): ...
+    
+class OldPrinter(Printable):
+    def print_doc(self, doc: str): ...
