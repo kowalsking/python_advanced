@@ -1,23 +1,31 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 
+# @dataclass
+class Payment:
+    def pay(self, amount: float) -> float:
+        print(f'P: {amount}')
+        return amount
+
 @dataclass
-class User:
-    name: str
-    bonus: int = 0
+class BonusPayment(Payment):
+    bonuses: float
+    def pay(self, amount: float) -> float:
+        final = amount - self.bonuses
+        print(f'P: {final}')
+        return final
+
+@dataclass
+class InstallmentPayment(Payment):
+    part: int
+    def pay(self, amount: float) -> float:
+        final = amount / self.part
+        print(f'P: {amount / self.part}')
+        return final
     
-    def add_bonus(self, amount: int):
-        self.bonus += amount
-        print(f'{self.name} get {amount} bonuses. All: {self.bonus}')
+    
+def pay(method: Payment):
+    return method.pay(33)
 
-class PremiumUser(User):
-    def add_bonus(self, amount: int):
-        self.bonus += amount * 2
-        print(f'{self.name} get {amount} bonuses. All: {self.bonus}')
-        
-class BannedUser(User):
-    def add_bonus(self, amount: int):
-        # raise Exception('Banned User!')
-        print(f'{self.name} can"t get bonuses.')
-
-user = User('A')
+pay(InstallmentPayment(2))
