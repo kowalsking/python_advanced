@@ -1,29 +1,25 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
-# class PaymentProcessor:
-#     def pay(self, amount: float): ...
-#     def refund(self, amount: float): ...
-#     def tokenize(self, amount: float): ...
-#     def check_balance(self, amount: float): ...
 
-class Payable(ABC):
+class Logger(ABC):
     @abstractmethod
-    def pay(self, amount: float): ...
-    
-class Refundable(ABC):
-    @abstractmethod
-    def refund(self, amount: float): ...
+    def log(self, message): ...
 
-class Tokenizeble(ABC):
-    @abstractmethod
-    def tokenize(self, amount: float): ...
-    
-class BalanceCheckable(ABC):
-    @abstractmethod
-    def check_balance(self, amount: float): ...
-    
-class Card(Payable, Tokenizeble):
-    def pay(self, amount: float): ...
-    def refund(self, amount: float): ...
-    def tokenize(self, amount: float): ...
-    
+class FileLogger(Logger):
+    def log(self, message: str):
+        print(f'Write file: {message}')
+        
+class ConsoleLogger(Logger):
+    def log(self, message: str):
+        print(f'Write file: {message}')
+
+@dataclass
+class UserService:
+    logger: Logger
+
+    def create_user(self, name: str):
+        self.logger.log(f'Created account {name}')
+
+service = UserService(ConsoleLogger())
+service.create_user('sd')
