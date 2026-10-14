@@ -1,40 +1,23 @@
-# class Notifier:
-#     def send(self, message: str, method: str) -> None:
-#         if method == 'email':
-#             print(f'[Email] Message sent: {message}')
-#         elif method == 'push':
-#             print(f'[Push] Message sent: {message}')
-#         else:
-#             print('Unknown notification method.')
-
-
-from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 
-class NotificationPolicy(ABC):
-    @abstractmethod
-    def send(self, message: str) -> None:
-        pass
-    
-class EmailNotification(NotificationPolicy):
-    def send(self, message: str) -> None:
-        print(f'[Email] Message sent: {message}')
-
-class PushNotification(NotificationPolicy):
-    def send(self, message: str) -> None:
-        print(f'[Push] Message sent: {message}')
-
-class TelegramNotification(NotificationPolicy):
-    def send(self, message: str) -> None:
-        print(f'[Telegram] Message sent: {message}')
-
 @dataclass
-class Notifier:
-    notifier: NotificationPolicy
+class User:
+    name: str
+    bonus: int = 0
     
-    def send(self, message: str) -> None:
-        self.notifier.send(message)
-    
-calc = Notifier(TelegramNotification())
-print(calc.send('Hello'))
+    def add_bonus(self, amount: int):
+        self.bonus += amount
+        print(f'{self.name} get {amount} bonuses. All: {self.bonus}')
+
+class PremiumUser(User):
+    def add_bonus(self, amount: int):
+        self.bonus += amount * 2
+        print(f'{self.name} get {amount} bonuses. All: {self.bonus}')
+        
+class BannedUser(User):
+    def add_bonus(self, amount: int):
+        # raise Exception('Banned User!')
+        print(f'{self.name} can"t get bonuses.')
+
+user = User('A')
