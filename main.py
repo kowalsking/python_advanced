@@ -1,36 +1,23 @@
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import Protocol
+from typing import Any
 
+class Demo:
+    def __getattribute__(self, name: str) -> Any:
+        print(f'Ac: {name}')
+        return super().__getattribute__(name)
 
-class StockRepository(Protocol):
-    def get_stock_count(self) -> int: ...
-
-class Notifier(Protocol):
-    def notify(self, message: str): ...
-
-@dataclass
-class InMemoryStockRepository:
-    items_count: int
-
-    def get_stock_count(self) -> int:
-        return self.items_count
+    def __getattr__(self, name):
+        print(f'{name} not found')
+        return None
     
-class EmailNotifier:
-    def notify(self, message: str):
-        print(f'Email: {message}')
-
-@dataclass
-class LowStockService:
-    repository: StockRepository
-    notifier: Notifier
+    def hello(self):
+        print('hello', self)
     
-    def run(self):
-        c = self.repository.get_stock_count()
-        if c <= 10:
-            self.notifier.notify('Buy more items')
-        else:
-            print('All good!')
+    
+d = Demo()
+d.x = 42
+print(d.x)
+print(d.y)
 
-service = LowStockService(InMemoryStockRepository(101), EmailNotifier())
-service.run()
+print(d.__dict__)
+print(d.hello)
+print(Demo.hello)
