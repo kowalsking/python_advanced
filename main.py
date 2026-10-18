@@ -1,17 +1,22 @@
-from typing import TypeVar, Callable
+from dataclasses import dataclass
+from typing import TypeVar, Optional
 
 
-T = TypeVar('T')
-R = TypeVar('R')
+@dataclass
+class User:
+    id: int
+    name: str
+    email: str
+    
+def get_user_by_id(user_id: int) -> Optional[User]:
+    users = [
+        User(1, 'Anton', 'a@a.ua'),
+        User(2, 'Vasia', 'v@a.ua'),
+    ]
+    
+    for user in users:
+        if user.id == user_id:
+            return user
+    return None
 
-def make_pair(a: T, b: R) -> tuple[T, R]:
-    return (a, b)
-
-def get_first(a: tuple[T, R]) -> T:
-    return a[0]
-
-def get_second(a: tuple[T, R]) -> R:
-    return a[1]
-
-def swap_pair(a: tuple[T, R]) -> tuple[R, T]:
-    return (a[1], a[0])
+user = get_user_by_id(999)
