@@ -4,10 +4,14 @@ from typing import TypeVar, Callable
 T = TypeVar('T')
 R = TypeVar('R')
 
-def proccess_items(items: list[T], transformer: Callable[[T], R]) -> list[R]:
-    return [transformer(item) for item in items]
+def make_pair(a: T, b: R) -> tuple[T, R]:
+    return (a, b)
 
-def to_upper(s: str) -> str:
-    return s.upper()
+def get_first(a: tuple[T, R]) -> T:
+    return a[0]
 
-result = proccess_items(['Anton', 'Vasia'], to_upper)
+def get_second(a: tuple[T, R]) -> R:
+    return a[1]
+
+def swap_pair(a: tuple[T, R]) -> tuple[R, T]:
+    return (a[1], a[0])
