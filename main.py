@@ -1,17 +1,14 @@
 from dataclasses import dataclass
-from typing import Callable, TypeVar, Optional, Generic, Protocol, Union
+from typing import Callable, TypeVar, Optional, Generic, Protocol, Union, TypeGuard
 
 T = TypeVar('T')
 R = TypeVar('R')
 
-# def safe_div(a: float, b: float) -> Union[float, str]:
-def safe_div(a: float, b: float) -> float | str:
-    if b == 0:
-        return 'divide on 0'
-    return a / b
+def is_int_list(x: list[int] | list[str]) -> TypeGuard[list[int]]:
+    return all(isinstance(i, int) for i in x)
 
-def ensure_list(value: T | list[T]) -> list[T]:
-    if isinstance(value, list):
-        return value
-    return [value]
-
+def f(xs: list[int] | list[str]):
+    if is_int_list(xs):
+        xs[0].is_integer()
+    else:
+        xs[0].capitalize() # error
