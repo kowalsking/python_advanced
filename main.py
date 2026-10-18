@@ -1,23 +1,24 @@
 from dataclasses import dataclass
-from typing import Callable, TypeVar, Optional
+from typing import Callable, TypeVar, Optional, Generic
 
 T = TypeVar('T')
 R = TypeVar('R')
 
-def safe_get(arr: list[T], index: int) -> Optional[T]:
-    if 0 <= index <= len(arr):
-        return arr[index]
-    return None
+@dataclass
+class IntBox:
+    value: int
+    
+    def get(self) -> int:
+        return self.value
+    
 
-def map_optional(value: Optional[T], transformer: Callable[[T], R]) -> Optional[R]:
-    if value is not None:
-        transformer(value)
-    return None
-
-def or_else(value: Optional[T], default: T) -> T:
-    if value is not None:
-        return value
-    return default
-
-
-print(safe_get([1, 2, 3], 10))
+@dataclass
+class Box(Generic[T]):
+    value: T
+    
+    def get(self) -> T:
+        return self.value
+    
+int_box = Box(1)
+print(int_box.get())
+str_box = Box('hello')
