@@ -1,23 +1,16 @@
 from dataclasses import dataclass
 from typing import Callable, TypeVar, Optional, Generic
 
-T = TypeVar('T')
+Number = TypeVar('Number', int, float) # <- type limitation
 R = TypeVar('R')
 
 @dataclass
-class Repository(Generic[T]):
-    items: list[T]
+class MyMath(Generic[Number]):
+    def max(self, a: Number, b: Number):
+        return a if a > b else b
     
-    def add(self, item: T):
-        self.items.append(item)
-
-    def get_by_index(self, index: int) -> Optional[T]:
-        if 0 <= index <= len(self.items):
-            return self.items[index]
-        return None
+    def add(self, a: Number, b: Number):
+        return a + b
     
-    def get_all(self) -> list[T]:
-        return self.items
-
-repo = Repository[int]([1, 2])
-print(repo.get_by_index(1))
+    
+math = MyMath[int]()
