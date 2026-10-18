@@ -5,20 +5,19 @@ T = TypeVar('T')
 R = TypeVar('R')
 
 @dataclass
-class IntBox:
-    value: int
+class Repository(Generic[T]):
+    items: list[T]
     
-    def get(self) -> int:
-        return self.value
-    
+    def add(self, item: T):
+        self.items.append(item)
 
-@dataclass
-class Box(Generic[T]):
-    value: T
+    def get_by_index(self, index: int) -> Optional[T]:
+        if 0 <= index <= len(self.items):
+            return self.items[index]
+        return None
     
-    def get(self) -> T:
-        return self.value
-    
-int_box = Box(1)
-print(int_box.get())
-str_box = Box('hello')
+    def get_all(self) -> list[T]:
+        return self.items
+
+repo = Repository[int]([1, 2])
+print(repo.get_by_index(1))
