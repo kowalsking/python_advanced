@@ -1,22 +1,23 @@
 from dataclasses import dataclass
-from typing import TypeVar, Optional
+from typing import Callable, TypeVar, Optional
 
+T = TypeVar('T')
+R = TypeVar('R')
 
-@dataclass
-class User:
-    id: int
-    name: str
-    email: str
-    
-def get_user_by_id(user_id: int) -> Optional[User]:
-    users = [
-        User(1, 'Anton', 'a@a.ua'),
-        User(2, 'Vasia', 'v@a.ua'),
-    ]
-    
-    for user in users:
-        if user.id == user_id:
-            return user
+def safe_get(arr: list[T], index: int) -> Optional[T]:
+    if 0 <= index <= len(arr):
+        return arr[index]
     return None
 
-user = get_user_by_id(999)
+def map_optional(value: Optional[T], transformer: Callable[[T], R]) -> Optional[R]:
+    if value is not None:
+        transformer(value)
+    return None
+
+def or_else(value: Optional[T], default: T) -> T:
+    if value is not None:
+        return value
+    return default
+
+
+print(safe_get([1, 2, 3], 10))
