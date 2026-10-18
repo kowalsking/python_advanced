@@ -1,30 +1,17 @@
 from dataclasses import dataclass
-from typing import Callable, TypeVar, Optional, Generic, Protocol
+from typing import Callable, TypeVar, Optional, Generic, Protocol, Union
 
-T = TypeVar('T', bound=Identifieble) # <- bound
+T = TypeVar('T')
 R = TypeVar('R')
 
-@dataclass
-class Identifieble(Protocol):
-    id: int
-    
-def get_by_id(items: list[T], id_: int) -> Optional[T]:
-    for item in items:
-        if item.id == id_:
-            return item
-        return None
+# def safe_div(a: float, b: float) -> Union[float, str]:
+def safe_div(a: float, b: float) -> float | str:
+    if b == 0:
+        return 'divide on 0'
+    return a / b
 
-@dataclass
-class User(Generic[T]):
-    id: int
-    
-@dataclass
-class Product(Generic[T]):
-    ids: int
-    
-@dataclass
-class Order(Generic[T]):
-    id: int
-    
-get_by_id([User(1)], 1)
-get_by_id([Product(1)], 1) # error
+def ensure_list(value: T | list[T]) -> list[T]:
+    if isinstance(value, list):
+        return value
+    return [value]
+
