@@ -20,10 +20,11 @@ class User(Generic[T]):
     
 @dataclass
 class Product(Generic[T]):
-    id: int
+    ids: int
     
 @dataclass
 class Order(Generic[T]):
     id: int
     
 get_by_id([User(1)], 1)
+get_by_id([Product(1)], 1) # error
