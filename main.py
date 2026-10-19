@@ -1,10 +1,16 @@
 import asyncio
+import time
 
-async def get_message():
-    return 'Hello!'
+async def fetch():
+    await asyncio.sleep(2)
+    return 'done'
+
 
 async def main():
-    result =  await asyncio.create_task(get_message())
-    print('Hello!', result)
+    tasks = [fetch() for _ in range(3)]
+    results = await asyncio.gather(*tasks)
+    print(results)
+    # for _ in range(3):
+    #     print(fetch())
 
 asyncio.run(main())
