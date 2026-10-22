@@ -29,6 +29,5 @@ async def main():
     result = await run_with_retry(unstable)
     print(f'Summary: {result}')
         
-        
-        
-asyncio.run(main())
+def run():
+    asyncio.run(main())
