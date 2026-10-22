@@ -1,33 +1,19 @@
-import asyncio
-import random
+from pathlib import Path
+import sys
 
-async def unstable():
-    await asyncio.sleep(2)
-    if random.random() < 0.5:
-        raise ValueError('Eror')
-    return 'OK'
-
-async def run_with_retry(job, max_retries=3):
-    for attempt in range(1, max_retries + 1):
-        task = asyncio.create_task(job())
-        
-        try:
-            result = await task
-            print(f'Try {attempt}: success => {result}')
-            return result
-        except Exception as e:
-            print(f'Try {attempt}: error -> {e}')
-
-            if attempt == max_retries:
-                print('All tries fall')
-                return 'ERROR'
-            await asyncio.sleep(0.5)
-                
+from note_app.config.config import AppSettings
 
 
-async def main():
-    result = await run_with_retry(unstable)
-    print(f'Summary: {result}')
-        
+def create_app(data_path: Path | None = None):
+    settings: AppSettings
+    if data_path:
+        settings = AppSettings.from_custom_path(data_path)
+    else:
+        settings = AppSettings.from_defaults()
+    # Start App
+
 def run():
-    asyncio.run(main())
+    data_path = None
+    if len(sys.argv[1]):
+        data_path = Path(sys.argv[1])
+    create_app(data_path)
