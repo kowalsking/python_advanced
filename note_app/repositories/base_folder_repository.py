@@ -7,11 +7,7 @@ from note_app.domain import Folder
 
 class BaseFolderRepository(ABC):
     @abstractmethod
-    def get_all_folders(self) -> list[Folder]:
-        pass
-    
-    @abstractmethod
-    def get_folder_by_path(self, path: Path) -> Folder:
+    def get_folders_by_path(self, path: Path) -> list[Folder]:
         pass
     
     @abstractmethod
