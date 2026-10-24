@@ -65,3 +65,12 @@ class NoteRepository(BaseNoteRepository):
         path = note.path.resolve()
         self._check_path(path)
         path.unlink()
+        
+    def load_note(self, path: Path) -> Note:
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
+            return Note(
+                path.name,
+                path,
+                content
+            )
