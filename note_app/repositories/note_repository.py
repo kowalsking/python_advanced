@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 import shutil
+from typing import Optional
 
 from note_app.domain import Folder
 from note_app.domain import Note
@@ -44,6 +45,20 @@ class NoteRepository(BaseNoteRepository):
             raise ValueError("Invalid note name")
         path.mkdir(parents=True, exist_ok=False)        
         return Note(name, path)
+    
+    def update_note(self, note: Note, content: str, new_name: Optional[str] = None) -> Note:
+        path = note.path.resolve()
+        self._check_path(path)
+
+        path.write_text(content, encoding="utf-8")
+
+        if new_name and new_name != note.name:
+            if "/" in new_name or "\\" in new_name:
+                raise ValueError("Invalid Note Name")
+            new_path = path.parent / f"{new_name}.md"
+            path.rename(new_path)
+            return Note(new_name, new_path)
+        return note
 
     
     def delete_note(self, note: Note) -> None:
